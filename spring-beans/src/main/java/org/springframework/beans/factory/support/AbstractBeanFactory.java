@@ -270,12 +270,21 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
+			/**
+			 * 当对象都是单例的的时候会尝试解决循环依赖问题，但是原型模式下如果存在循环依赖的情况，那么直接抛出异常
+			 */
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
 
 			// Check if bean definition exists in this factory.
+			/**
+			 * 获取父类容器
+			 */
 			BeanFactory parentBeanFactory = getParentBeanFactory();
+			/**
+			 * 如果beanDefinitionMap中也就是在所有已经加载的类中不包括beanName，那么就尝试从父容器中获取
+			 */
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
 				String nameToLookup = originalBeanName(name);
@@ -296,6 +305,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 
+			/**
+			 * 如果不是做类型检查，那么表示要创建bean，此处在集合中做一个记录
+			 */
 			if (!typeCheckOnly) {
 				markBeanAsCreated(beanName);
 			}
@@ -306,17 +318,30 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (requiredType != null) {
 					beanCreation.tag("beanType", requiredType::toString);
 				}
+				/**
+				 * 此处做了BeanDefinition对象的转换，当我们从xml文件中加载beanDefinition对象的时候，封装的对象是GenericBeanDefiniton
+				 * 此处要做类型转换，如果是子类bean的话，会合并父类的相关属性
+				 */
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
+				/**
+				 * 如果存在依赖bean的话，那么则优先实例化依赖的bean
+				 */
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
+					/**
+					 * 如果存在依赖，则需要递归实例化依赖的bean
+					 */
 					for (String dep : dependsOn) {
 						if (isDependent(beanName, dep)) {
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
+						/**
+						 * 注册各个bean的依赖关系，方便进行销毁
+						 */
 						registerDependentBean(dep, beanName);
 						try {
 							getBean(dep);
@@ -329,6 +354,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
+				/**
+				 * 创建bean的实例对象
+				 */
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
 						try {

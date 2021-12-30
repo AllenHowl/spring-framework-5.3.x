@@ -222,8 +222,17 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
+		/**
+		 * 全局变量需要同步
+		 */
 		synchronized (this.singletonObjects) {
+			/**
+			 * 首先检查一级缓存中是否存在对应的bean
+			 */
 			Object singletonObject = this.singletonObjects.get(beanName);
+			/**
+			 * 如果对象不存在，才需要进行bean的实例化
+			 */
 			if (singletonObject == null) {
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
@@ -233,6 +242,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+				/**
+				 * 记录当前对象的加载状态
+				 */
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
@@ -240,6 +252,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					/**
+					 * 开始进行bean对象创建
+					 */
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
