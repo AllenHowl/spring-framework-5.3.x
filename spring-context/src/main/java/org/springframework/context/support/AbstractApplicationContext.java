@@ -164,6 +164,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/** Unique id for this context, if any. */
+	/**
+	 * 创建上下文的唯一标识
+	 */
 	private String id = ObjectUtils.identityToString(this);
 
 	/** Display name. */
@@ -225,8 +228,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Create a new AbstractApplicationContext with no parent.
+	 * 创建一个无父类的AbstractApplicationContext对象
 	 */
 	public AbstractApplicationContext() {
+		/**
+		 * 创建资源模式处理器
+		 */
 		this.resourcePatternResolver = getResourcePatternResolver();
 	}
 
@@ -456,6 +463,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see org.springframework.core.io.support.PathMatchingResourcePatternResolver
 	 */
 	protected ResourcePatternResolver getResourcePatternResolver() {
+		// 创建一个资源模式解析器（其实就是用来解析xml配置文件）
 		return new PathMatchingResourcePatternResolver(this);
 	}
 
@@ -605,10 +613,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
+		// 设置启动时间
 		this.startupDate = System.currentTimeMillis();
+		// 容器的关闭标志位
 		this.closed.set(false);
+		// 容器的激活标志位
 		this.active.set(true);
 
+		// 记录日志
 		if (logger.isDebugEnabled()) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("Refreshing " + this);
@@ -619,24 +631,29 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		// 留给子类覆盖，初始化属性资源
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 创建并获取环境对象，验证需要的属性文件是否都已经放入环境中
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...
+		// 判读刷新前的应用程序监听器集合是否为空，如果为空，则将监听器添加到此集合中
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
 		else {
 			// Reset local application listeners to pre-refresh state.
+			// 如果不等于空
 			this.applicationListeners.clear();
 			this.applicationListeners.addAll(this.earlyApplicationListeners);
 		}
 
 		// Allow for the collection of early ApplicationEvents,
 		// to be published once the multicaster is available...
+		// 创建刷新前的监听事件集合
 		this.earlyApplicationEvents = new LinkedHashSet<>();
 	}
 
