@@ -139,7 +139,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 
 		/**
-		 * 通用父类构造方法，进行相关的对象创建等操作
+		 * 通用父类构造方法，进行相关的对象创建等操作,包含属性的赋值工作
 		 */
 		super(parent);
 		setConfigLocations(configLocations);

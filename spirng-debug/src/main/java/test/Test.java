@@ -3,6 +3,7 @@ package test;
 import bean.A;
 import bean.AFactoryBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import other.MyClassPathXmlApplicationContext;
 
 /**
@@ -23,5 +24,7 @@ public class Test {
 
 
 		ApplicationContext ac = new MyClassPathXmlApplicationContext("spring.xml");
+		A bean = ac.getBean(A.class);
+
 	}
 }
