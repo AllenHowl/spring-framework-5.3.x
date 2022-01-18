@@ -24,7 +24,7 @@ public class Test {
 
 
 		ApplicationContext ac = new MyClassPathXmlApplicationContext("spring.xml");
-		A bean = ac.getBean(A.class);
+		A bean = (A) ac.getBean("a1");
 
 	}
 }

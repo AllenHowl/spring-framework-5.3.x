@@ -12,7 +12,7 @@
 
 <!--	</bean>-->
 
-
+	<context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
 	<bean id="a2" class="bean.A" abstract="false">
 		<constructor-arg index="0" value="2"></constructor-arg>
 		<constructor-arg index="1" value="lisi"></constructor-arg>
