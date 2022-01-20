@@ -5,6 +5,7 @@ import bean.AFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import other.MyClassPathXmlApplicationContext;
+import selftag.User;
 
 /**
  * @ClassName: test.Test
@@ -24,7 +25,10 @@ public class Test {
 
 
 		ApplicationContext ac = new MyClassPathXmlApplicationContext("spring.xml");
-		A bean = (A) ac.getBean("a1");
+		User user = (User) ac.getBean("fjy");
+		System.out.println(user.getUsername());
+		System.out.println(user.getEmail());
+		System.out.println(user.getPassword());
 
 	}
 }
