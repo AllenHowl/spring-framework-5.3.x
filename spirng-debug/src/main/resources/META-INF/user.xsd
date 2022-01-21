@@ -2,7 +2,6 @@
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 		targetNamespace="http://www.fjy.com/schema/user"
-		xmlns:tns="http://www.fjy.com/schema/user"
 		elementFormDefault="qualified">
 
 	<xsd:element name="user">
