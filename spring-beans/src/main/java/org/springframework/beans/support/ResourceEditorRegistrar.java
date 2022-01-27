@@ -66,6 +66,8 @@ public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 
 
 	/**
+	 * 属性编辑注册器用力啊填充具体的属性在bean创建的时候
+	 *
 	 * Create a new ResourceEditorRegistrar for the given {@link ResourceLoader}
 	 * and {@link PropertyResolver}.
 	 * @param resourceLoader the ResourceLoader (or ResourcePatternResolver)
@@ -82,6 +84,8 @@ public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 
 
 	/**
+	 * 填充以下的资源编辑器
+	 *
 	 * Populate the given {@code registry} with the following resource editors:
 	 * ResourceEditor, InputStreamEditor, InputSourceEditor, FileEditor, URLEditor,
 	 * URIEditor, ClassEditor, ClassArrayEditor.
